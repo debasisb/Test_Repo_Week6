@@ -1,19 +1,32 @@
-const express = require('express')
-const app = express()
-const port = 3000
+//edited from bmi calcuator
+const express = require("express");
+const bodyParser = require("body-parser");
 
-app.get('/', (req, res) => res.send('Hello World! This is the main page - DebasisB!'))
 
-app.get('/contact', (req, res) => res.send('This is the contact page - Contact!'))
+const app = express();
 
-app.get('/news', (req, res) => res.send('This is the news page - News!'))
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/about', function (req, res) {
-    res.send('This is a the bio page - About!');
+
+app.get("/VolCalculator", function(req, res) {
+  res.sendFile(__dirname + "/VolCalculator.html");
 });
 
-//write a separate page about /products
-// send a simple message to this route
-//This is just a useless comment
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.post("/VolCalculator", function(req, res) {
+
+  //ai used to fix next two rows, parseInt wasnt functioning for radius, didn't catch why at first
+  var radius = parseFloat(req.body.radius);
+  var height = parseFloat(req.body.height);
+
+  // calculates the volume of a cylinder
+  var volume = Math.PI * Math.pow(radius, 2) * height;
+
+  //displays result in 2 decimal places
+  res.send("The Volume of the cylinder is " + volume.toFixed(2) + " units cubed");
+
+});
+//ai used below to fix code, 3000 was set to 0 and didn't realize this when i was testing this on my desktop
+app.listen(3000, function() {
+  console.log("Server is running on port 3000")
+});
